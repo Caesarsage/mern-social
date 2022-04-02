@@ -21,8 +21,8 @@ app.use('/posts', postRouter)
 
 
 // mongodb
-console.log(process.en)
-const CONNECTION_URL = process.env.MONGO_URL || "mongodb://localhost:27017/mern-social"
+console.log(process.env.MONGO_URL)
+const CONNECTION_URL = "mongodb+srv://mern-socal:mern-socal@cluster0.bo2ls.mongodb.net/mernSocials?retryWrites=true&w=majority"
 const PORT = process.env.PORT || 5000
 
 
