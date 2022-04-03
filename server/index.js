@@ -15,14 +15,12 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true}))
 app.use(cors())
 
 
-
-
 app.use('/posts', postRouter)
 
 
 // mongodb
 console.log(process.env.MONGO_URL)
-const CONNECTION_URL = "mongodb+srv://mern-socal:mern-socal@cluster0.bo2ls.mongodb.net/mernSocials?retryWrites=true&w=majority"
+const CONNECTION_URL = "mongodb://localhost:27017/mernSocials" ||"mongodb+srv://mern-socal:mern-socal@cluster0.bo2ls.mongodb.net/mernSocials?retryWrites=true&w=majority" 
 const PORT = process.env.PORT || 5000
 
 
