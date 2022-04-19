@@ -68,7 +68,10 @@ export const likePost = async(req,res)=>{
     post.likes.push(req.userId)
   }else{
     // dislike a post
-    post.likes = post.likes.filter((id) !== String(req.userId))
+    post.likes = post.likes.filter((id)=>{
+      return id !== req.userId
+    });
+   
   }
 
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new:true})
