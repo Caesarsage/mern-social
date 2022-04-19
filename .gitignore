@@ -3,3 +3,4 @@ env
 .env.local
 .env.local.example
 node_modules
+/*.env
