@@ -11,7 +11,7 @@ export const Posts = ({setCurrentId}) => {
   const classes = useStyles()
   const {posts, isLoading} = useSelector((state)=> state.posts) 
 
-  if(!posts.length && !isLoading) return 'No posts'
+  if(!posts.length && !isLoading) return 'No Memory'
 
   return (
     isLoading ? <CircularProgress /> :(
