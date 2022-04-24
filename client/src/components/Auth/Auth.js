@@ -74,7 +74,7 @@ export const Auth = () => {
     console.log('ERROR SIGNING INTO GOOGLE')
   }
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs"  raised elevation={6}>
       <Paper className={classes.paper} elevation={3}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

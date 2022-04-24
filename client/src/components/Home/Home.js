@@ -36,10 +36,6 @@ export const Home = () => {
     }
   }
 
-  useEffect(()=>{
-    dispatch(getPosts())
-  },[dispatch, currentId])
-
   const handleKeyPress = (e)=>{
     if(e.keyCode === 13){
       searchPost()
@@ -94,7 +90,7 @@ export const Home = () => {
               </AppBar>
               <Form currentId={currentId} setCurrentId={setCurrentId} />
               <Paper elevation={6}>
-                <Paginate />
+                <Paginate page={page} />
               </Paper>
             </Grid>
           </Grid>
