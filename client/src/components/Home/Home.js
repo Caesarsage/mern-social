@@ -24,10 +24,10 @@ export const Home = () => {
   const query = useQuery()
   const history = useHistory()
   const page = query.get('page') || 1
-  const searchQuery = query.get('search')
+  const searchQuery = query.get('searchQuery')
 
   const searchPost = ()=>{
-    if(search.trim() || tags){
+    if(tags){
       // dispatch to fetch
       dispatch(getPostsBySearch({search, tags: tags.join(',')}))
       history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`)

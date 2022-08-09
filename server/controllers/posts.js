@@ -29,15 +29,14 @@ export const getPost = async (req, res)=>{
 
 export const getPostsBySearch = async (req,res)=>{
   const {searchQuery, tags} = req.query
+  console.log(req.query);
   try {
     const title = new RegExp(searchQuery, 'i')
     
     // either find all post that match title or tags array.
     // and inside array of tag, is one of the tag equals array of tags
-    const posts = await PostMessage.find({$or: [
-      {title}, {tags: {$in: tags.split(',')}}
-    ]})
-
+    const posts = await PostMessage.find({ $or: [ { title }, { tags: { $all: tags.split(',') } } ] });
+    // const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ]});
     res.json({data: posts})
     
   } catch (error) {

@@ -4,15 +4,18 @@ import FileBase from 'react-file-base64'
 import useStyles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/post'
+import { useHistory } from 'react-router-dom'
 
 export default function Form({currentId, setCurrentId}) {
   const classes = useStyles()
   const [postData, setPostData] = useState({
     title:"", message:"", tags:"", selectedFile:""
   })
-  const user = JSON.parse(localStorage.getItem("profile"));
+  const user = JSON.parse(localStorage.getItem("profile"))
 
-  const post = useSelector((state)=> currentId ? state.posts.find((p)=> p._id === currentId) : null)
+  const post = useSelector((state)=> currentId ? state.posts.posts.find((p)=> p._id === currentId) : null)
+
+  const history = useHistory()
 
   useEffect(()=>{
     if(post) setPostData(post)
@@ -27,6 +30,7 @@ export default function Form({currentId, setCurrentId}) {
     }else{
       dispatch(createPost({...postData, name: user?.result?.name }))
     }
+    history.push('/')
     clear()
   }
 

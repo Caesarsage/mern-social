@@ -10,7 +10,6 @@ import useStyles from './styles.js'
 export const Posts = ({setCurrentId}) => {
   const classes = useStyles()
   const {posts, isLoading} = useSelector((state)=> state.posts) 
-
   if(!posts.length && !isLoading) return 'No Memory'
 
   return (

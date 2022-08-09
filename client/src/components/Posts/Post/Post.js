@@ -11,6 +11,8 @@ import {
   Typography,
   ButtonBase,
 } from "@material-ui/core";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbDownAltOutlined";
 import EditIcon from "@material-ui/icons/Edit";
@@ -24,13 +26,13 @@ const Post = ({ post, setCurrentId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const history = useHistory()
+  const history = useHistory();
 
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  const openPost = ()=>{
-    history.push(`/posts/${post._id}`)
-  }
+  const openPost = () => {
+    history.push(`/posts/${post._id}`);
+  };
 
   // likes
   const Likes = () => {
@@ -58,48 +60,58 @@ const Post = ({ post, setCurrentId }) => {
 
   return (
     <Card className={classes.card} raised elevation={6}>
-      <ButtonBase className={classes.cardActions} onClick={openPost}>
-        <CardMedia
-          className={classes.media}
-          image={post.selectedFile}
-          title={post.title}
-        />
+      <CardMedia
+        className={classes.media}
+        image={post.selectedFile}
+        title={post.title}
+      />
 
-        <div className={classes.overlay}>
-          <Typography variant="h6">{post.name}</Typography>
-          <Typography variant="body2">
-            {moment(post.createdAt).fromNow()}
-          </Typography>
-        </div>
-        <div className={classes.overlay2}>
-          {user?.result.googleId === post ||
-            (user?.result?._id === post?.creator && (
-              <Button
-                style={{ color: "white" }}
-                size="small"
-                onClick={() => {
-                  setCurrentId(post._id);
-                }}
-              >
-                <EditIcon fontSize="medium" />
-              </Button>
-            ))}
-        </div>
-        <div className={classes.details}>
-          <Typography variant="body2" color="textSecondary">
-            {post.tags.map((tag) => `#${tag} `)}
-          </Typography>
-        </div>
-        <Typography variant="h5" className={classes.title}>
-          {post.title}
+      <div className={classes.overlay}>
+        <Typography variant="h6">{post.name}</Typography>
+        <Typography variant="body2">
+          {moment(post.createdAt).fromNow()}
         </Typography>
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {post.message}
-          </Typography>
-        </CardContent>
-      </ButtonBase>
+      </div>
+      <div className={classes.overlay2}>
+        {user?.result.googleId === post ||
+          (user?.result?._id === post?.creator && (
+            <Button
+              style={{ color: "white" }}
+              size="small"
+              onClick={() => {
+                setCurrentId(post._id);
+              }}
+            >
+              <EditIcon fontSize="medium" />
+            </Button>
+          ))}
+      </div>
+      <div className={classes.details}>
+        <Typography variant="body2" color="textSecondary">
+          {post.tags.map((tag) => `#${tag} `)}
+        </Typography>
+      </div>
+      <Typography variant="h5" className={classes.title}>
+        {post.title}
+      </Typography>
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {post.message.slice(0,50)} {post.message.length > 50 && (
+            <ButtonBase className={classes.cardActions} onClick={openPost}>
+            <MoreHorizIcon />
+          </ButtonBase>
+          )}
+        </Typography>
+      </CardContent>
+
       <CardActions className={classes.cardActions}>
+        <Button
+          size="small"
+          color="primary"
+          onClick={openPost}
+        >
+          <ArrowForwardIosIcon />
+        </Button>
         <Button
           size="small"
           color="primary"

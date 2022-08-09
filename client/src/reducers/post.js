@@ -1,4 +1,4 @@
-import { CREATE, DELETE, END_LOADING, FETCH_ALL, FETCH_BY_SEARCH, FETCH_ONE, LIKE, START_LOADING, UPDATE } from "../constants.ActionTypes";
+import { CREATE, DELETE, END_LOADING, FETCH_ALL, FETCH_BY_SEARCH, FETCH_ONE, LIKE, START_LOADING, UPDATE } from "../constants.ActionTypes.js";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = {isLoading: true, posts:[]}, action) {
