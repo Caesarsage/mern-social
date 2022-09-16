@@ -20,6 +20,11 @@ export const createPost = (newPost) => API.post('/posts', newPost)
 export const updatePost = (id, updatePost) => API.patch(`/posts/${id}`, updatePost)
 export const deletePost = (id) => API.delete(`/posts/${id}`)
 export const likePost = (id) => API.patch(`/posts/${id}/likes`)
+export const commentPost = (id, value) => API.post(`/posts/${id}/comment`, value)
 
 export const login = (formData) => API.post('/user/login', formData)
-export const register = (formData) => API.post('/user/register', formData);
+export const register = (formData) => API.post('/user/register', formData)
+
+export const getUser = (id) => API.get(`/user/profile/${id}`)
+export const updatedUser = (id, updateUser) => API.patch(`/user/profile/${id}`, updateUser)
+export const followUser = (id) => API.patch(`/user/profile/${id}/follow`)

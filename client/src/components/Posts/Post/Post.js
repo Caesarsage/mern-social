@@ -44,7 +44,7 @@ const Post = ({ post, setCurrentId }) => {
           <ThumbUpAltIcon fontSize="small" /> &nbsp;
           {post.likes.length > 2
             ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+            : `${post.likes.length} ${post.likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
@@ -79,7 +79,7 @@ const Post = ({ post, setCurrentId }) => {
               style={{ color: "white" }}
               size="small"
               onClick={() => {
-                setCurrentId(post._id);
+                history.push(`/post/${post._id}/edit`);
               }}
             >
               <EditIcon fontSize="medium" />
@@ -110,7 +110,7 @@ const Post = ({ post, setCurrentId }) => {
           color="primary"
           onClick={openPost}
         >
-          <ArrowForwardIosIcon />
+          Read more <ArrowForwardIosIcon />
         </Button>
         <Button
           size="small"

@@ -134,7 +134,7 @@ export const Auth = () => {
           </Button>
           
           <GoogleLogin
-            clientId="862334740453-6j04mc42rr97idquog8g0l27lrt73be4.apps.googleusercontent.com"
+            clientId= {process.env.clientId}
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}

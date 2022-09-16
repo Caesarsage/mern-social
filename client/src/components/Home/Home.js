@@ -2,10 +2,10 @@ import React ,{ useEffect, useState }from 'react'
 import { Posts } from "../Posts/Posts";
 import Form from "../Forms/Form";
 import {Container,  Grow, Grid, Paper, AppBar,TextField, Button} from '@material-ui/core'
-import {getPosts, getPostsBySearch} from '../../actions/post'
+import {getPosts ,getPostsBySearch} from '../../actions/post'
 import { useDispatch } from "react-redux";
 import { Paginate } from '../Paginations/Pagination';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input'
 
 import useStyles from './styles'
@@ -53,53 +53,61 @@ export const Home = () => {
 
   return (
     <Grow in>
-        <Container maxWidth="xl">
-          <Grid container justifyContent="space-between"
+      <Container maxWidth="xl">
+        <Grid container justifyContent="space-between">
+          <Button
+            component={Link}
+            to="/post/create"
+            size = "small"
+            variant="contained"
+            color="primary"
           >
-            <Grid item xs={12} sm={6} md={9}>
-              <Posts setCurrentId={setCurrentId}/>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <AppBar className={classes.appBarSearch} position="static"
-                color='inherit'>
-                  <TextField
-                   name="search"
-                   variant="outlined"
-                   label="Search Memories"
-                   fullWidth
-                   value={search}
-                   onKeyPress={handleKeyPress}
-                   onChange={(e)=>setSearch(e.target.value)}
-                />
-                <ChipInput
-                  style={{margin: '10px 0'}}
-                  value={tags}
-                  onAdd={handleAdd}
-                  onDelete={handleDelete}
-                  label="Search tags"
-                  variant='outlined'
-                />
-                <Button 
-                  onClick={searchPost}
-                  className={classes.searchButton}
-                  color="primary"
-                  variant="contained"
-                >
-                  Search
-                </Button>
-              </AppBar>
-              <Form currentId={currentId} setCurrentId={setCurrentId} />
-              {
-                (!searchQuery && !tags.length) && (
-                  <Paper elevation={6} className={classes.pagination}>
-                    <Paginate page={page} />
-                  </Paper>
-                )
-              }
-              
-            </Grid>
+            Create Memory
+          </Button>
+          <AppBar
+            className={classes.appBarSearch}
+            position="static"
+            color="inherit"
+          >
+            <TextField
+              name="search"
+              variant="outlined"
+              label="Search Memories"
+              fullWidth
+              value={search}
+              onKeyPress={handleKeyPress}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <ChipInput
+              style={{ margin: "10px 0" }}
+              value={tags}
+              onAdd={handleAdd}
+              onDelete={handleDelete}
+              label="Search tags"
+              variant="outlined"
+            />
+            <Button
+              onClick={searchPost}
+              className={classes.searchButton}
+              color="primary"
+              variant="contained"
+            >
+              Search
+            </Button>
+          </AppBar>
+          <Grid item xs={12} sm={6} md={9}>
+            <Posts setCurrentId={setCurrentId} />
           </Grid>
-        </Container>
-      </Grow>
-  )
+          <Grid item xs={12} sm={6} md={3}>
+            {/* <Form currentId={currentId} setCurrentId={setCurrentId} /> */}
+            {!searchQuery && !tags.length && (
+              <Paper elevation={6} className={classes.pagination}>
+                <Paginate page={page} />
+              </Paper>
+            )}
+          </Grid>
+        </Grid>
+      </Container>
+    </Grow>
+  );
 }

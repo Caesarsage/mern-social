@@ -14,6 +14,9 @@ import { getPost, getPostsBySearch } from "../../actions/post";
 import useStyles from "./styles";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
+
+import { Comments } from "./Comments";
+
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
@@ -26,17 +29,12 @@ const PostDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    // if (post) {
-      // populate the posts by search on tags
       dispatch(
         getPostsBySearch({
           search: "none",
           tags: post?.data?.tags.join(","),
         })
       );
-    // }
-    console.log(post?.data?.tags.join(","))
-    console.log(posts);
   }, []);
 
   if (!post) return null;
@@ -53,16 +51,14 @@ const PostDetails = () => {
   const openPost = (_id) => {
     history.push(`/posts/${_id}`);
   };
-  const back = () => {};
+  const back = () => {
+    history.push('/posts')
+  };
 
   return (
     <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
       <div className={classes.card}>
         <div className={classes.section}>
-          <Button size="small" color="primary" onClick={back}>
-            <ArrowBackIosIcon />
-          </Button>
-
           <Typography variant="h3" component="h2">
             {post.data.title}
           </Typography>
@@ -74,18 +70,25 @@ const PostDetails = () => {
           >
             {post.data.tags.map((tag) => `#${tag}`)}
           </Typography>
-          <Typography gutterBottom variant="body" component="p">
+          <Divider />
+          <Typography gutterBottom variant="body1" component="p">
             {post.data.message}
           </Typography>
-          <Typography variant="h6">Created by: {post.data.name}</Typography>
+          <Divider />
+          <i variant="body1">Created by: {post.data.name}</i>
           <Typography>{moment(post.data.createdAt).fromNow()}</Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Button>Send Crypto - Appreciate Post</Button>
+          <Button>Send Crypto - Appreciate Memory</Button>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">comments</Typography>
+          <Typography variant="body1">
+            <Comments post={post} />
+          </Typography>
           <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>
+          <Button size="small" color="primary" onClick={back}>
+            <ArrowBackIosIcon size="small" /> Back
+          </Button>
           <img
             className={classes.media}
             src={post.data.selectedFile}
@@ -94,7 +97,8 @@ const PostDetails = () => {
         </div>
       </div>
 
-      {recommendedPosts.length && (
+      {/* RECOMMENDED POSTS */}
+      {recommendedPosts?.length ? (
         <div className={classes.section}>
           <Typography gutterBottom variant="h5">
             You may also like :
@@ -108,20 +112,27 @@ const PostDetails = () => {
                     style={{ margin: "20px", cursor: "pointer" }}
                     onClick={() => openPost(_id)}
                     key={_id}
-                    
                   >
-                    <Typography gutterButtom variant="h6">{title}</Typography>
-                    <Typography gutterButtom variant="subtitle2">{name}</Typography>
-                    <Typography gutterButtom variant="subtitle2">{message}</Typography>
-                    <Typography gutterButtom variant="subtitle1">Likes: {likes.length}</Typography>
-                    <img src={selectedFile} width='200px'/>
+                    <Typography gutterButtom variant="h6">
+                      {title}
+                    </Typography>
+                    <Typography gutterButtom variant="subtitle2">
+                      {name}
+                    </Typography>
+                    <Typography gutterButtom variant="subtitle2">
+                      {message}
+                    </Typography>
+                    <Typography gutterButtom variant="subtitle1">
+                      Likes: {likes.length}
+                    </Typography>
+                    <img src={selectedFile} width="200px" alt="" />
                   </div>
                 );
               }
             )}
-          </div>
-        </div>
-      )}
+          </div> 
+        </div> 
+      ): ' '}
     </Paper>
   );
 };

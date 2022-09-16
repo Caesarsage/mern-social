@@ -1,4 +1,4 @@
-import { CREATE, DELETE, END_LOADING, FETCH_ALL, FETCH_BY_SEARCH, FETCH_ONE, LIKE, START_LOADING, UPDATE } from "../constants.ActionTypes.js";
+import { CREATE, DELETE, END_LOADING, FETCH_ALL, FETCH_BY_SEARCH, FETCH_ONE, LIKE, START_LOADING, UPDATE, COMMENT } from "../constants/constants.ActionTypes";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = {isLoading: true, posts:[]}, action) {
@@ -22,7 +22,14 @@ export default function (state = {isLoading: true, posts:[]}, action) {
       }
     case UPDATE:
     case LIKE:
-      return {...state, posts: state.posts.map((post)=> post._id === action.payload._id ? action.payload : post)};
+      return { ...state, posts: state.posts.map((post) => post._id === action.payload._id ? action.payload : post) };
+    case COMMENT:
+      return {
+        ...state, posts: state.posts.map((post) => {
+        // return all post and change post that got commented
+          if (post._id === action.payload._id) return action.payload
+          return post
+      })}
     case DELETE:
       return {...state, posts: state?.posts.filter((post)=> post._id !== action.payload)}
     case CREATE:

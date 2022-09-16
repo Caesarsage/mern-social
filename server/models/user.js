@@ -1,20 +1,35 @@
 import mongoose  from "mongoose";
 
 const userSchema = mongoose.Schema({
-  name:{
+  name: {
     type: String,
-    required: true
+    required: true,
   },
-  email:{
+  email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
-  id:{
-    type: String
+  image: {
+    type: String,
+  },
+  age: String,
+  gender: String,
+  socials: {
+    linkedin: String,
+    twitter: String,
+    github: String,
+    website: String
+  },
+  followers: {
+    type: [String]
+  },
+  memories: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "memory",
   }
 });
 
