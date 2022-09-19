@@ -5,7 +5,9 @@ import {END_LOADING,START_LOADING,} from "../constants/constants.ActionTypes";
 export const getUser = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    const { data } = await api.fetchUser(id);
+    const {
+      data: { data },
+    } = await api.getUser(id);
 
     dispatch({ type: 'FETCH_USER', payload: data });
     dispatch({ type: END_LOADING });
@@ -17,7 +19,7 @@ export const getUser = (id) => async (dispatch) => {
 export const updateUser = (id, user) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    const { data } = await api.updateUser(id, user);
+    const { data } = await api.updatedUser(id, user);
 
     dispatch({ type: 'UPDATE_USER', payload: data });
     dispatch({ type: END_LOADING });
@@ -29,7 +31,7 @@ export const updateUser = (id, user) => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    await api.deleteUser(id);
+    await api.updatedUser(id);
     dispatch({ type: 'DELETE_USER', payload: id });
     dispatch({ type: END_LOADING });
   } catch (error) {
@@ -40,6 +42,7 @@ export const deleteUser = (id) => async (dispatch) => {
 export const followUser = (id) => async (dispatch) => {
   try {
     const { data } = await api.followUser(id);
+    // console.log(data);
     dispatch({ type: 'FOLLOW_USER', payload: data });
   } catch (error) {
     console.log(error);

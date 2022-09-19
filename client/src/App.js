@@ -4,12 +4,13 @@ import { BrowserRouter, Route,Redirect, Switch} from "react-router-dom";
 import {Container} from '@material-ui/core'
 
 import { Navbar } from "./components/Navbar/Navbar";
-import { Home } from "./components/Home/Home";
+import { Memory } from "./pages/Memory/Memory";
 import { Auth } from "./components/Auth/Auth";
-import PostDetails from "./components/PostDetails/PostDetails";
-import CreatePost from "./components/Posts/CreatePost";
-import Profile from "./components/Profile/Profile";
-import EditPost from "./components/Posts/EditPost";
+import PostDetails from "./pages/PostDetails/PostDetails";
+import CreatePost from "./pages/Posts/CreatePost";
+import Profile from "./pages/Profile/Profile";
+import EditPost from "./pages/Posts/EditPost";
+import { Home } from "./pages/Home/Home"
 
 function App() {
   const user = JSON.parse(localStorage.getItem('profile'))
@@ -19,13 +20,13 @@ function App() {
       <Navbar />
       <Container maxWidth="xl">
         <Switch>
-          <Route path="/" exact component={() => <Redirect to="/posts" />} />
-          <Route path="/posts" exact component={Home} />
-          <Route path="/posts/search" exact component={Home} />
+          <Route path="/" exact component={Home} />
+          <Route path="/posts" exact component={Memory} />
+          <Route path="/posts/search" exact component={Memory} />
           <Route path="/post/create" exact component={CreatePost} />
           <Route path="/posts/:id" exact component={PostDetails} />
           <Route path="/post/:id/edit" exact component={EditPost} />
-          <Route path="/user/profile" exact component={Profile} />
+          <Route path="/user/profile/:id" exact component={Profile} />
           <Route
             path="/auth"
             exact

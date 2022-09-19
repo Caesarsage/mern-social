@@ -3,11 +3,11 @@ import { deepPurple } from '@material-ui/core/colors';
 
 export default makeStyles((theme) => ({
   appBar: {
+    overflowY: 'hidden',
     margin: "0 0 30px 0",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px 50px",  
+    padding: "10px 0px",  
   },
   heading: {
     color: theme.palette.primary.main,
@@ -21,21 +21,17 @@ export default makeStyles((theme) => ({
   },
   toolbar: {
     display: "flex",
-    justifyContent: "flex-end",
-    width: "400px",
+    justifyContent: "space-between",
     [theme.breakpoints.down("sm")]: {
       width: "auto",
     },
   },
   profile: {
     display: "flex",
-    justifyContent: "space-between",
     width: "400px",
-    alignItems: "center",
     [theme.breakpoints.down("sm")]: {
       width: "auto",
       marginTop: 20,
-      justifyContent: "center",
     },
   },
 
@@ -49,7 +45,7 @@ export default makeStyles((theme) => ({
   logout: {
     marginLeft: "10px",
     [theme.breakpoints.down("sm")]: {
-      width: "50%",
+      width: "90%",
     },
   },
   userName: {
@@ -58,14 +54,14 @@ export default makeStyles((theme) => ({
     textAlign: "start",
     fontStyle: "italic",
     color: "grey",
-    [theme.breakpoints.down("sm")]: {
-      padding: "0 5px",
+    padding: "5px",
+    [theme.breakpoints.down("sm")]: {      
       fontSize: "small",
     },
   },
   brandContainer: {
     display: "flex",
-    alignItems: "center",
+    justifyContent: 'space-between'
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),

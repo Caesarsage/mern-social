@@ -48,7 +48,7 @@ export const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if(isSignup){
+    if (isSignup) {
       dispatch(register(formData, history))
     }else{
       dispatch(login(formData, history))
