@@ -8,7 +8,7 @@ router.post('/login', login)
 router.post('/register', register)
 
 router.get("/profile/:id", getUser);
-router.patch("/profile/:id", auth, updateUser);
+router.put("/profile/:id", auth, updateUser);
 router.patch("/profile/:id/follow", auth, followUser);
 
 export default router

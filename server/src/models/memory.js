@@ -1,11 +1,23 @@
 import mongoose  from "mongoose";
 
 const memorySchema = mongoose.Schema({
-  title: String,
-  message: String,
-  name: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true
+  },
+  name: {
+    type: String,
+    required: true
+  },
   creator: String,
-  tags: [String],
+  tags: {
+    type: [String],
+    maxLength: 3,
+  },
   selectedFile: String,
   likes: {
     type: [String],
@@ -21,10 +33,9 @@ const memorySchema = mongoose.Schema({
   },
   isPrivate: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 export const Memory = mongoose.model('Memory', memorySchema)
 
-// export default Memory;

@@ -2,18 +2,21 @@ import React ,{ useState }from 'react'
 import { Posts } from "../Posts/Posts";
 import {Container,  Grow, Grid, Paper, AppBar,TextField, Button} from '@material-ui/core'
 import {getPosts ,getPostsBySearch} from '../../actions/post'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Paginate } from '../../components/Paginations/Pagination';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input'
 
 import useStyles from './styles'
+import { Alert } from '@material-ui/lab';
 
 function useQuery(){
   return new URLSearchParams(useLocation().search)
 }
 
 export const Memory = () => {
+  const { error } = useSelector((state) => state.auth);
+
   const [currentId, setCurrentId] = useState(null)
   const dispatch = useDispatch()
   const classes = useStyles()
@@ -53,6 +56,7 @@ export const Memory = () => {
   return (
     <Grow in>
       <Container maxWidth="xl">
+        {error && <Alert severity="error">{error}</Alert>}
         <Grid container justifyContent="space-between">
           <Button
             component={Link}
@@ -72,7 +76,7 @@ export const Memory = () => {
             <TextField
               name="search"
               variant="outlined"
-              label="Search Memories"
+              label="Search Public Memories"
               fullWidth
               value={search}
               onKeyPress={handleKeyPress}

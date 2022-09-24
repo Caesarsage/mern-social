@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Form from "../../components/Forms/Form";
 import { Button } from "@material-ui/core";
 import { Link, useParams } from "react-router-dom";
@@ -10,6 +10,7 @@ const EditPost = () => {
   const { id } = useParams()
   
   const [currentId, setCurrentId] = useState(id);
+ 
 
   return (
     <div>

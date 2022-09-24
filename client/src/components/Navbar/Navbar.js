@@ -27,6 +27,7 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -35,20 +36,20 @@ export const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   const handleProfile = () => {
     if (user) {
       const id = user.result.id;
       history.push(`/user/profile/${id}`);
-    }
+      setAnchorEl(null)
+    }    
   };
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
-
-    history.push("/");
     localStorage.clear();
     setUser(null);
+    history.push("/");
   };
 
   useEffect(() => {
@@ -67,34 +68,7 @@ export const Navbar = () => {
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
-      <header className={`${classes.brandContainr} site-header`}>
-        <div className="header-shape header-shape-1">
-          <svg
-            width="337"
-            height="222"
-            viewBox="0 0 337 222"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <linearGradient
-                x1="50%"
-                y1="55.434%"
-                x2="50%"
-                y2="0%"
-                id="header-shape-1"
-              >
-                <stop stopColor="#E0E1FE" stopOpacity="0" offset="0%" />
-                <stop stopColor="#E0E1FE" offset="100%" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M1103.21 0H1440v400h-400c145.927-118.557 166.997-251.89 63.21-400z"
-              transform="translate(-1103)"
-              fill="url(#header-shape-1)"
-              fillRule="evenodd"
-            />
-          </svg>
-        </div>
+      <header className={ `${classes.brandContainer} site-header`}>
         <div className="header-shape header-shape-2">
           <svg
             width="128"
@@ -229,28 +203,20 @@ export const Navbar = () => {
                 TransitionComponent={Fade}
               >
                 <br /> <br />
-                <MenuItem  onClick={handleProfile}>My Account</MenuItem>
+                <MenuItem onClick={handleProfile}>My Account</MenuItem>
                 <Divider />
-                <MenuItem onClick={logout}>
-                   Logout
-                </MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </div>
             <Typography className={classes.userName} variant="h6">
               welcome {user.result.name.split(" ")[0]}
             </Typography>
-            <div>            
-            </div>
           </div>
         ) : (
-          <Button
-            onClick={() => {
-              history.push("/auth");
-            }}
-            variant="contained"
-            color="primary"
-          >
-            Get Started
+          <Button variant="contained" color="primary">
+            <Link style={{ color: "white", textDecoration: "none" }} to="/auth">
+              Get Started
+            </Link>
           </Button>
         )}
         <Button

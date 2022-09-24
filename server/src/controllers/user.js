@@ -45,8 +45,8 @@ export const register = async (req, res) => {
     password,
     confirmPassword,
     firstName,
+    about,
     lastName,
-    age,
     gender,
     twitter,
     linkedin,
@@ -71,8 +71,8 @@ export const register = async (req, res) => {
     const result = new User({
       name: `${firstName} ${lastName}`,
       imageUrl,
-      age,
       gender,
+      about,
       socials: {
         twitter,
         linkedin,
@@ -95,7 +95,7 @@ export const register = async (req, res) => {
       id: result._id,
       name: result.name,
       imageUrl: result.imageUrl,
-      age: result.age,
+      about: result.about,
       gender: result.gender,
       socials: {
         twitter: result.socials.twitter,
@@ -108,7 +108,8 @@ export const register = async (req, res) => {
 
     res.status(200).json({ message: "successful", token, result: sendToFE });
   } catch (error) {
-    res.status(400).json({ message: "Error occur" + error });
+    return next(new ErrorResponse(error, 400));
+    // res.json({ message: "Error occur" + error });
   }
 };
 
@@ -131,21 +132,29 @@ export const getUser = async (req, res) => {
       message: "User found",
     });
   } catch (error) {
-    console.log(error);
+    res.status(400).json({ message: error.message });  
   }
 };
 
 export const updateUser = async (req, res) => {
-  try {
-    const { name, age, gender, twitter, linkedin, github, website, imageUrl } =
-      await req.body;
+  const {
+      name,
+      about,
+      gender,
+      twitter,
+      linkedin,
+      github,
+      website,
+      imageUrl,
+  } = req.body;
+  try {    
     const { id } = req.params;
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
       {
         name,
-        age,
+        about,
         imageUrl,
         gender,
         socials: {
@@ -163,12 +172,14 @@ export const updateUser = async (req, res) => {
     if (!updatedUser) {
       return res.send("User not updated");
     }
+    console.log(updatedUser);
     return res.json({
       data: updatedUser,
       message: "User info updated",
     });
+   
   } catch (error) {
-    console.log(error);
+    res.status(400).json({ message: error.message });  
   }
 };
 
@@ -206,15 +217,14 @@ export const followUser = async (req, res) => {
     });
     await User.updateOne({ _id: req.userId }, { $pull: { following: id } });
   }
-
-  console.log("follow", user);
-
-  const currentUser = await User.findById(req.userId);
-  console.log("current", currentUser);
-
+  await User.findById(req.userId);
   const updatedUser = await User.findByIdAndUpdate(id, user, {
     new: true,
-  });
+  })
+    .select("-password")
+    .populate("followers")
+    .populate("following")
+    .populate("memories");
 
   res.json(updatedUser);
 };

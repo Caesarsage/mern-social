@@ -14,11 +14,14 @@ import { getPost, getPostsBySearch } from "../../actions/post";
 import useStyles from "./styles";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
-
+import parse from "html-react-parser";
 import { Comments } from "./Comments";
+import { Alert } from "@material-ui/lab";
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
+  const { error } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
@@ -64,6 +67,7 @@ const PostDetails = () => {
 
   return (
     <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
+      {error && <Alert severity="error">{error}</Alert>}
       <div className={classes.card}>
         <div className={classes.section}>
           <Typography variant="h3" component="h2">
@@ -79,7 +83,7 @@ const PostDetails = () => {
           </Typography>
           <Divider />
           <Typography gutterBottom variant="body1" component="p">
-            {post.data.message}
+            {parse(post.data.message)}
           </Typography>
           <Divider />
           <Typography size="small">
@@ -118,7 +122,7 @@ const PostDetails = () => {
           <Divider />
           <div className={classes.recommendedPosts}>
             {recommendedPosts.map(
-              ({ title, message, name, likes, selectedFile, _id }) => {
+              ({ title, name, likes, selectedFile, _id }) => {
                 return (
                   <div
                     style={{ margin: "20px", cursor: "pointer" }}
@@ -130,9 +134,6 @@ const PostDetails = () => {
                     </Typography>
                     <Typography gutterBottom variant="subtitle2">
                       {name}
-                    </Typography>
-                    <Typography gutterBottom variant="subtitle2">
-                      {message}
                     </Typography>
                     <Typography gutterBottom variant="subtitle1">
                       Likes: {likes.length}

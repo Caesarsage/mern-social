@@ -1,6 +1,13 @@
 {
   "cSpell.words": [
+    "loggedin",
     "noreferrer",
     "Unfollow"
-  ]
+  ],
+  "[yaml]": {
+    "files.eol": "auto"
+  },
+  "editor.codeActionsOnSave": {
+  
+  }
 }

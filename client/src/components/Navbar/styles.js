@@ -3,11 +3,12 @@ import { deepPurple } from '@material-ui/core/colors';
 
 export default makeStyles((theme) => ({
   appBar: {
-    overflowY: 'hidden',
+    overflow: "hidden",
     margin: "0 0 30px 0",
     display: "flex",
     justifyContent: "space-between",
-    padding: "10px 0px",  
+    padding: "10px 0px",
+    height: "200px"
   },
   heading: {
     color: theme.palette.primary.main,
@@ -55,13 +56,13 @@ export default makeStyles((theme) => ({
     fontStyle: "italic",
     color: "grey",
     padding: "5px",
-    [theme.breakpoints.down("sm")]: {      
+    [theme.breakpoints.down("sm")]: {
       fontSize: "small",
     },
   },
   brandContainer: {
     display: "flex",
-    justifyContent: 'space-between'
+    justifyContent: "space-between",
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),

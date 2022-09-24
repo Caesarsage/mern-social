@@ -4,8 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import useStyle from "./styles";
 import { commentPost } from "../../actions/post";
+import { Alert } from "@material-ui/lab";
 
 export const Comments = ({ post }) => {
+  const { error } = useSelector((state) => state.posts);
+
   const [comments, setComments] = useState(post?.data.comments);
   const [comment, setComment] = useState("");
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -29,6 +32,7 @@ export const Comments = ({ post }) => {
   return (
     <div>
       <div className={classes.commentsOuterContainer}>
+        {error && <Alert severity="error">{error}</Alert>}
         <div className={classes.commentsInnerContainer}>
           <Typography gutterBottom variant="h6">
             Comments

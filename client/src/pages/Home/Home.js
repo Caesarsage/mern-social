@@ -1,7 +1,11 @@
 import { Button } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 export const Home = () => {
+
+  const history = useHistory()
+ 
   return (
     <section className="is-boxed  ">
       <div className="body-wrap boxed-container">      
@@ -22,6 +26,9 @@ export const Home = () => {
                       <Button
                         color="primary"
                         variant="contained"
+                        onClick={() => {
+                          history.push('/auth')
+                        }}
                         // className="button button-primary button-block"
                       >
                         Get Started
@@ -819,7 +826,7 @@ export const Home = () => {
             </div>
           </section>
 
-          <section className="testimonials section">
+          {/* <section className="testimonials section">
             <div className="testimonials-shape testimonials-shape-1">
               <svg
                 width="280"
@@ -901,7 +908,7 @@ export const Home = () => {
             <div className="container">
               <div className="testimonials-inner section-inner">
                 <h2 className="section-title mt-0 text-center">Testimonials</h2>
-                {/* <div className="testimonials-wrap">
+                <div className="testimonials-wrap">
                   <div className="testimonial text-xs is-revealing">
                     <div className="testimonial-inner">
                       <div className="testimonial-main">
@@ -974,10 +981,10 @@ export const Home = () => {
                       </div>
                     </div>
                   </div>
-                </div> */}
+                </div>
               </div>
             </div>
-          </section>
+          </section> */}
 
           <section className="newsletter section text-light">
             <div className="container-sm">
@@ -1092,12 +1099,6 @@ export const Home = () => {
                 </li>
                 <li>
                   <a href="#">About us</a>
-                </li>
-                <li>
-                  <a href="#">FAQ's</a>
-                </li>
-                <li>
-                  <a href="#">Support</a>
                 </li>
               </ul>
               <ul className="footer-social-links list-reset">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -6,39 +6,48 @@ import {
   Grid,
   Typography,
   Container,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  TextField,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { GoogleLogin } from "react-google-login";
 
 import useStyles from "./styles";
-import { Input } from "./Input";
+import { Input } from "../shared/Input";
 
 import Icon from "./icon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import {login, register} from '../../actions/auth'
+import { login, register } from "../../actions/auth";
+import { Alert } from "@material-ui/lab";
 
 const initialState = {
-  firstName: '',
-  lastName:'',
-  email:'',
-  password:'',
-  confirmPassword:''
-}
+  firstName: "",
+  lastName: "",
+  email: "",
+  gender: "",
+  about: "",
+  password: "",
+  confirmPassword: "",
+};
 
 export const Auth = () => {
+  const { error } = useSelector((state) => state.auth);
+
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
-  const [formData, setFormData] = useState(initialState)
+  const [formData, setFormData] = useState(initialState);
 
   const classes = useStyles();
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  
   const switchMode = () => {
     setIsSignup((prev) => !prev);
-    setShowPassword(false)
+    setShowPassword(false);
   };
 
   const handleShowPassword = () => {
@@ -46,35 +55,43 @@ export const Auth = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (isSignup) {
-      dispatch(register(formData, history))
-    }else{
-      dispatch(login(formData, history))
+      dispatch(register(formData, history));
+      
+    } else {
+      dispatch(login(formData, history));
     }
   };
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name] : e.target.value})
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const googleSuccess = async(res)=>{
+  const googleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
 
     try {
-      dispatch({type: 'AUTH', data: {result, token}});
-      history.push('/')
+      dispatch({ type: "AUTH", data: { result, token } });
+      history.push("/");
     } catch (error) {
-      console.log(error);
+      dispatch({ type: "ERROR", error: error.response.data.message });
     }
-  }
-  const googleFailure = ()=>{
-    console.log('ERROR SIGNING INTO GOOGLE')
-  }
+  };
+
+  const googleFailure = () => {
+    dispatch({ type: "ERROR", error: "ERROR SIGNING INTO GOOGLE" });
+  };
+
   return (
-    <Container component="main" maxWidth="xs"  raised elevation={6}>
+    <Container raised elevation={6}>
+      {error && (
+        <Alert severity="error" onClose={() => {}}>
+          {error}
+        </Alert>
+      )}
       <Paper className={classes.paper} elevation={3}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -89,14 +106,49 @@ export const Auth = () => {
                   label="First Name"
                   handleChange={handleChange}
                   autoFocus
+                  required
                   half
                 />
                 <Input
                   name="lastName"
                   label="Last Name"
                   handleChange={handleChange}
+                  required
                   half
                 />
+                <TextField 
+                  fullWidth
+                  rows={4}
+                  variant="outlined"
+                  multiline
+                  name="about"
+                  label="Profile"
+                  handleChange={handleChange}
+                  type="text"
+                  autoFocus
+                  required
+                />
+                <div style={{ display: "block", paddingLeft: "1em" }}>
+                  <FormLabel id="gender">Gender</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="gender"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="male"
+                      control={<Radio />}
+                      label="male"
+                    />
+                    <FormControlLabel
+                      value="female"
+                      control={<Radio />}
+                      label="female"
+                    />
+                  </RadioGroup>
+                </div>
               </>
             )}
             <Input
@@ -105,10 +157,13 @@ export const Auth = () => {
               handleChange={handleChange}
               type="email"
               autoFocus
+              required
             />
+
             <Input
               name="password"
               label="password"
+              required
               handleChange={handleChange}
               type={showPassword ? "text" : "password"}
               handleShowPassword={handleShowPassword}
@@ -117,12 +172,13 @@ export const Auth = () => {
               <Input
                 name="confirmPassword"
                 label="Repeat Password"
+                required
                 handleChange={handleChange}
                 type="password"
               />
             )}
           </Grid>
-          
+
           <Button
             type="submit"
             fullWidth
@@ -132,9 +188,9 @@ export const Auth = () => {
           >
             {isSignup ? "Sign up" : "Sign in"}
           </Button>
-          
+
           <GoogleLogin
-            clientId= {process.env.clientId}
+            clientId={process.env.clientId}
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}
@@ -148,16 +204,22 @@ export const Auth = () => {
                 Google Sign in
               </Button>
             )}
-            onSuccess = {googleSuccess}
-            onFailure= {googleFailure}
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
             cookiePolicy="single_host_origin"
           />
           <Grid container justify="center">
             <Grid item>
-              <Button onClick={switchMode}>
-                {isSignup
-                  ? "Already have an account ? Sign in"
-                  : "Do'nt have an account ? Sign  up"}
+              <Button onClick={switchMode} size="small">
+                {isSignup ? (
+                  <>
+                    Already have an account ?<strong>Sign in</strong>
+                  </>
+                ) : (
+                  <>
+                    Do'nt have an account ? <strong> Sign up </strong>{" "}
+                  </>
+                )}
               </Button>
             </Grid>
           </Grid>

@@ -7,24 +7,40 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Button,
   Typography,
-  ButtonBase,
   Chip,
+  CardHeader,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Divider,
+  Fade,
 } from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deletePost, likePost } from "../../../actions/post";
 import { useHistory } from "react-router-dom";
+import { Alert } from "@material-ui/lab";
 
 const Post = ({ post, setCurrentId }) => {
+  const { error } = useSelector((state) => state.auth);
+
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -41,11 +57,13 @@ const Post = ({ post, setCurrentId }) => {
     }
   };
 
+ 
   // likes
-  const Likes = () => {
+  const Likes = ({post}) => {
+    console.log(post);
     if (post?.likes?.length > 0) {
       return post.likes.find(
-        (like) => like === (user?.result?.googleId || user?.result?.id)
+        (like) => like._id === (user?.result?.googleId || user?.result?.id)
       ) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
@@ -58,101 +76,126 @@ const Post = ({ post, setCurrentId }) => {
         <>
           <ThumbUpAltOutlined fontSize="small" />
           &nbsp;{post.likes.length}
-          {post.likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
     return (
       <>
         <ThumbUpAltOutlined fontSize="small" />
-        &nbsp;Like
+        &nbsp;
       </>
     );
   };
+  
 
   return (
-    <Card className={classes.card} raised elevation={6}>
-      <CardMedia
-        className={classes.media}
-        image={post.selectedFile}
-        title={post.title}
-      />
-
-      <div className={classes.overlay}>
-        <Typography
-          variant="h6"
-          onClick={handleProfile}
-          style={{ cursor: "pointer" }}
-        >
-          {post.name}
-        </Typography>
-        <Chip label={post.isPrivate ? "Private" : "Public"} size='small' />   
-        <Typography variant="body2">
-          {moment(post.createdAt).fromNow()}
-        </Typography>
-             
-      </div>
-      <div className={classes.overlay2}>
-        {user?.result.googleId === post ||
-          (user?.result?.id === post?.creator && (
-            <Button
-              style={{ color: "white" }}
-              size="small"
-              onClick={() => {
-                history.push(`/post/${post._id}/edit`);
-              }}
+    <>
+      {error && <Alert severity="error">{error}</Alert>}
+      <Card
+        sx={{ maxWidth: 345 }}
+        className={classes.card}
+        raised
+        elevation={6}
+      >
+        <CardHeader
+          className={classes.title}
+          avatar={
+            <Avatar
+              aria-label="creator"
+              style={{ cursor: "pointer" }}
+              onClick={handleProfile}
             >
-              <EditIcon fontSize="medium" />
-            </Button>
-          ))}
-      </div>
-      <div className={classes.details}>
-        <Typography variant="body2" color="textSecondary">
-          {post.tags.map((tag) => `#${tag} `)}
-        </Typography>
-      </div>
-      <Typography variant="h5" className={classes.title}>
-        {post.title}
-      </Typography>
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {post.message.slice(0, 50)}{" "}
-          {post.message.length > 50 && (
-            <ButtonBase className={classes.cardActions} onClick={openPost}>
-              <MoreHorizIcon />
-            </ButtonBase>
-          )}
-        </Typography>
-      </CardContent>
-
-      <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={openPost}>
-          Read <ArrowForwardIosIcon />
-        </Button>
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => {
-            dispatch(likePost(post._id));
+              {post?.name[0]}
+            </Avatar>
+          }
+          action={
+            user?.result.googleId === post ||
+            (user?.result?.id === post?.creator && (
+              <IconButton
+                aria-label="settings"
+                id="fade-button"
+                aria-controls={open ? "fade-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            ))
+          }
+          title={post?.title}
+          subheader={moment(post?.createdAt).fromNow()}
+        />
+        <Menu
+          id="fade-menu"
+          MenuListProps={{
+            "aria-labelledby": "fade-button",
           }}
-          disabled={!user?.result}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          TransitionComponent={Fade}
         >
-          <Likes />
-        </Button>
-        {user?.result.googleId === post ||
-          (user?.result?.id === post?.creator && (
-            <Button
-              size="small"
-              color="primary"
-              onClick={() => {
-                dispatch(deletePost(post._id));
-              }}
-            >
-              <DeleteIcon fontSize="small" /> Delete
-            </Button>
-          ))}
-      </CardActions>
-    </Card>
+          <br /> <br />
+          <MenuItem
+            onClick={() => {
+              history.push(`/post/${post._id}/edit`);
+              setAnchorEl(null);
+            }}
+          >
+            <EditIcon fontSize="medium" /> Edit
+          </MenuItem>
+          <Divider />
+          <MenuItem
+            onClick={() => {
+              dispatch(deletePost(post._id));
+              setAnchorEl(null);
+            }}
+          >
+            <DeleteIcon fontSize="small" />
+            Delete
+          </MenuItem>
+        </Menu>
+        <CardMedia
+          component="img"
+          height="194"
+          image={post?.selectedFile}
+          alt={post?.title}
+          style={{ cursor: "pointer" }}
+          onClick={openPost}
+        />
+        <CardContent className={classes.details}>
+          <Typography variant="body2" color="text.secondary">
+            {/* {parse(post?.message.trim().toLowerCase())} */}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            {post?.tags.map((tag) => `#${tag} `)}
+          </Typography>
+        </CardContent>
+        <CardActions className={classes.cardActions}>
+          <Chip label={post.isPrivate ? "Private" : "Public"} size="small" />
+          <IconButton
+            aria-label="add to favorites"
+            size="small"
+            color="primary"
+            onClick={() => {
+              console.log(post._id);
+              dispatch(likePost(post._id));
+            }}
+            disabled={!user?.result}
+          >
+            <Likes post={post} />
+          </IconButton>
+          <IconButton
+            aria-label="share"
+            style={{ cursor: "pointer" }}
+            onClick={openPost}
+          >
+            <MoreHorizIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    </>
   );
 };
 

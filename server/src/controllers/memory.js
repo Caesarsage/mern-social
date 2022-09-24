@@ -5,7 +5,7 @@ import { User } from "../models/user.js";
 export const getMemories = async (req, res) => {
   const { page } = req.query;
   try {
-    const LIMIT = 10;
+    const LIMIT = 11;
     const startIndex = (Number(page) - 1) * LIMIT;
     const total = await Memory.countDocuments({});
 
@@ -53,18 +53,18 @@ export const getMemoriesBySearch = async (req, res) => {
 
 export const createMemory = async (req, res) => {
   const posts = req.body;
-  const creator = req.userId
+  const creator = req.userId;
   const newMemory = new Memory({
     ...posts,
     creator: creator,
     createdAt: new Date().toISOString(),
   });
-  const user = await User.findById(creator)
-  user.memories.push(newMemory._id)
-  
+  const user = await User.findById(creator);
+  user.memories.push(newMemory._id);
+
   try {
     await newMemory.save();
-    await user.save()
+    await user.save();
     res.status(200).json(newMemory);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -89,11 +89,12 @@ export const updateMemory = async (req, res) => {
 
 export const deleteMemory = async (req, res) => {
   const { id } = req.params;
-
+if (!req.userId) return res.json({ message: "Unauthenticated" });
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).json("invalid id");
 
   await Memory.findByIdAndRemove(id);
+  await User.updateOne({ _id: req.userId }, { $pull: { memories: id } });
 
   res.status(200).json({ message: "post deleted successfully" });
 };
@@ -110,8 +111,6 @@ export const likeMemory = async (req, res) => {
   const post = await Memory.findById(id);
 
   const index = await post.likes.findIndex((id) => id === String(req.userId));
-
-  console.log(index)
 
   if (index === -1) {
     // like post
@@ -133,15 +132,17 @@ export const likeMemory = async (req, res) => {
 export const commentMemory = async (req, res) => {
   const { id } = await req.params;
   try {
-    const { value }  = await req.body
+    const { value } = await req.body;
 
-    const post = await Memory.findById(id)
-    post.comments.push(value)
+    const post = await Memory.findById(id);
+    post.comments.push(value);
 
-    const updatedMemory = await Memory.findByIdAndUpdate(id, post, { new: true })
+    const updatedMemory = await Memory.findByIdAndUpdate(id, post, {
+      new: true,
+    });
 
-    res.json(updatedMemory)
+    res.json(updatedMemory);
   } catch (error) {
-    console.log(error);
+    res.status(404).json({ message: error.message });
   }
 };

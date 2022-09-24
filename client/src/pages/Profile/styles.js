@@ -49,8 +49,8 @@ export default makeStyles((theme) => ({
   },
   imgIcon: {
     position: "absolute",
-    left: "-7px",
-    // opacity: 0,
+    left: "-22px",
+    opacity: 0.001,
     background: "transparent",
     color: "transparent",
     cursor: "pointer",
