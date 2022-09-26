@@ -10,6 +10,7 @@ import {
   commentMemory,
 } from "../controllers/memory.js";
 import auth from '../middlewares/auth.js';
+import { isOwner } from '../middlewares/owner.js';
 
 const router = express.Router();
 
@@ -18,8 +19,8 @@ router.get("/", getMemories);
 router.get('/:id', getMemory)
 
 router.post('/', auth, createMemory )
-router.patch('/:id', auth, updateMemory)
-router.delete('/:id', auth, deleteMemory)
+router.patch("/:id", auth, isOwner, updateMemory);
+router.delete("/:id", auth, isOwner, deleteMemory);
 router.patch('/:id/likes', auth, likeMemory)
 router.post("/:id/comment", auth, commentMemory);
 

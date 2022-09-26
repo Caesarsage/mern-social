@@ -10,6 +10,10 @@ import {
 } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import FileBase from "react-file-base64";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import LanguageIcon from '@material-ui/icons/Language';
+import GitHubIcon from "@material-ui/icons/GitHub";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -173,7 +177,7 @@ export default function Profile() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Linkedin
+                  <LinkedInIcon />
                 </a>
               )}
               {user?.socials?.twitter && (
@@ -183,7 +187,7 @@ export default function Profile() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Twitter
+                  <TwitterIcon />
                 </a>
               )}
               {user?.socials?.github && (
@@ -193,7 +197,7 @@ export default function Profile() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Github
+                  <GitHubIcon />
                 </a>
               )}
               {user?.socials?.website && (
@@ -203,7 +207,7 @@ export default function Profile() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  website
+                  <LanguageIcon />
                 </a>
               )}
             </div>

@@ -69,11 +69,13 @@ export default function Form({ currentId, setCurrentId }) {
         title: post.title,
         message: post.message,
         tags: post.tags,
-        isPrivate: false,
+        isPrivate: '' ,
         selectedFile: post.selectedFile,
       });
     }
   }, [post]);
+
+  console.log(postData)
 
   const dispatch = useDispatch();
 
@@ -181,12 +183,12 @@ export default function Form({ currentId, setCurrentId }) {
             }
           >
             <FormControlLabel
-              value="true"
+              value="false"
               control={<Radio />}
               label="Public"
             />
             <FormControlLabel
-              value="false"
+              value="true"
               control={<Radio />}
               label="Private"
             />

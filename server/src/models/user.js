@@ -1,4 +1,4 @@
-import mongoose  from "mongoose";
+import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
   name: {
@@ -13,13 +13,17 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: String,
+    default: false,
+  },
   imageUrl: {
     type: String,
     default: "",
   },
   about: {
     type: String,
-    default: ''
+    default: "",
   },
   gender: {
     type: String,
@@ -57,4 +61,4 @@ const userSchema = mongoose.Schema({
   },
 });
 
-export const User = mongoose.model('User', userSchema)
+export const User = mongoose.model("User", userSchema);

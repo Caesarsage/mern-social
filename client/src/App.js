@@ -12,15 +12,18 @@ import Profile from "./pages/Profile/Profile"
 import EditPost from "./pages/Posts/EditPost"
 import { Home } from "./pages/Home/Home"
 import { EditProfile } from "./pages/Profile/EditProfile"
-import { Error } from "./pages/Error"
+import { Error } from "./pages/Error/Error"
+import { Footer } from "./pages/Footer/Footer"
+import MenuAppBar from "./pages/Drawer/DrawerAppBar"
 
 function App() {
   const user = JSON.parse(localStorage.getItem('profile'))
 
   return (
     <BrowserRouter>
-      <Navbar />
-      <Container maxWidth="xl">
+      <MenuAppBar />
+      {/* <Navbar /> */}
+      <Container maxWidth="xl" style={{marginTop: '5em'}}>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/posts" exact component={Memory} />
@@ -38,6 +41,7 @@ function App() {
           <Route path="*" exact component={Error} />
         </Switch>
       </Container>
+      <Footer />
     </BrowserRouter>
   );
 }
