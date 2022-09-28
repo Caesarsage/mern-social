@@ -32,6 +32,7 @@ export const login = async (req, res) => {
       name: existingUser.name,
       imageUrl: existingUser.imageUrl,
     };
+    console.log(result)
 
     res.status(200).json({ message: "successful", result, token });
   } catch (error) {
@@ -172,7 +173,6 @@ export const updateUser = async (req, res) => {
     if (!updatedUser) {
       return res.send("User not updated");
     }
-    console.log(updatedUser);
     return res.json({
       data: updatedUser,
       message: "User info updated",

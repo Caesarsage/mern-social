@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Radio,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { GoogleLogin } from "react-google-login";
@@ -35,7 +36,7 @@ const initialState = {
 };
 
 export const Auth = () => {
-  const { error } = useSelector((state) => state.auth);
+  const { error, isLoading  } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
@@ -84,6 +85,15 @@ export const Auth = () => {
   const googleFailure = () => {
     dispatch({ type: "ERROR", error: "ERROR SIGNING INTO GOOGLE" });
   };
+
+  if (isLoading) {
+    return (
+      <Paper elevation={6} className={classes.loadingPaper}>
+        <CircularProgress size="7em" />
+      </Paper>
+    );
+  }
+  console.log(isLoading);
 
   return (
     <Container raised elevation={6}>
@@ -204,8 +214,8 @@ export const Auth = () => {
                 Google Sign in
               </Button>
             )}
-            onSuccess={googleSuccess}
-            onFailure={googleFailure}
+            // onSuccess={googleSuccess}
+            // onFailure={googleFailure}
             cookiePolicy="single_host_origin"
           />
           <Grid container justify="center">

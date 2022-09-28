@@ -18,9 +18,10 @@ export const getUser = (id) => async (dispatch) => {
 export const updateUser = (id, user) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    const { data } = await api.updatedUser(id, user);  
-    dispatch({ type: "UPDATE_USER", payload: data });  
-    dispatch({ type: END_LOADING });
+    const { data } = await api.updatedUser(id, user);
+    dispatch({ type: "UPDATE_USER", payload: data });
+    // window.location.reload();
+    dispatch({ type: END_LOADING });    
   } catch (error) {
     dispatch({ type: "ERROR", error: error.response.data.message });
   }

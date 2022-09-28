@@ -12,7 +12,7 @@ import React, { useState, useEffect } from "react";
 import FileBase from "react-file-base64";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import TwitterIcon from "@material-ui/icons/Twitter";
-import LanguageIcon from '@material-ui/icons/Language';
+import LanguageIcon from "@material-ui/icons/Language";
 import GitHubIcon from "@material-ui/icons/GitHub";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,6 @@ import Post from "../Posts/Post/Post";
 
 import useStyles from "./styles";
 
-import igr from "../../images/memories.jpg";
 import Edit from "@material-ui/icons/Edit";
 import { Alert } from "@material-ui/lab";
 
@@ -43,12 +42,15 @@ export default function Profile() {
     dispatch(getUser(id));
   }, []);
 
-  console.log(user);
+
+
 
   const handleImageUpload = (e) => {
-    dispatch(updateUser(user?._id, { imageUrl: e.base64 }));
-    window.location.reload();
+    dispatch(updateUser(user?._id, { imageUrl: e.base64 }));    
+    // window.location.reload();
   };
+
+   console.log(user);
 
   if (!user) return null;
 
@@ -75,7 +77,8 @@ export default function Profile() {
             </>
           ) : (
             <strong>
-              {user.followers.length} Follower {user.followers.length > 1 ? "s" : ""} 
+              {user.followers.length} Follower{" "}
+              {user.followers.length > 1 ? "s" : ""}
             </strong>
           )}
         </>
@@ -128,7 +131,7 @@ export default function Profile() {
             <div style={{ position: "relative" }}>
               <img
                 className={classes.image}
-                src={user?.imageUrl || igr}
+                src={user?.imageUrl}
                 alt="profile pic"
               />
               {loggedin?.result.id === user?._id && (

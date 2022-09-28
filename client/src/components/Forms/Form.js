@@ -88,7 +88,7 @@ export default function Form({ currentId, setCurrentId }) {
     } else {
       dispatch(createPost({ ...postData, name: user?.result?.name }));
     }
-    history.push("/");
+    history.push("/posts");
     clear();
   };
 
